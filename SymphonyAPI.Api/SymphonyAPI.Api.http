@@ -1,0 +1,6 @@
+@SymphonyAPI.Api_HostAddress = http://localhost:5084
+
+GET {{SymphonyAPI.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

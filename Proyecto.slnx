@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/clients/" />
+  <Folder Name="/src/">
+    <File Path="docker-compose.yml" />
+    <Project Path="Gateway/Gateway.csproj" Id="0b4b7827-3667-4bdb-a056-6bcf6936a26e" />
+    <Project Path="SymphonyAPI.Api/SymphonyAPI.Api.csproj" />
+    <Project Path="SymphonyAPI.Application/SymphonyAPI.Application.csproj" />
+    <Project Path="SymphonyAPI.Domain/SymphonyAPI.Domain.csproj" />
+    <Project Path="SymphonyAPI.Infrastructure/SymphonyAPI.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
+</Solution>

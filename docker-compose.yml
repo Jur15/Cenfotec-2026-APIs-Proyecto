@@ -1,0 +1,67 @@
+services:
+
+  symphony.api:
+    build:
+      context: .
+      dockerfile: SymphonyAPI.Api/Dockerfile
+
+    ports:
+      - "5001:8080"
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Default: "Server=sqlserver,1433;Database=Symphony;User Id=sa;Password=MiPasswordSegura2026;TrustServerCertificate=True"
+      Jwt__Key: "8Fv9Lm2Qx7Np5Kd1Wr6Ys3Zh8Tc2026ClaveSegura"
+      Jwt__Issuer: "SymphonyAPI"
+      Jwt__Audience: "SymphonyAPIClients"
+      ApiKey__Value: "ck_live_7f3a9c2e1b6d4f0a8e5c"
+
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+
+  symphony.gateway:
+    build:
+      context: .
+      dockerfile: Gateway/Dockerfile
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Jwt__Key: "8Fv9Lm2Qx7Np5Kd1Wr6Ys3Zh8Tc2026ClaveSegura"
+      Jwt__Issuer: "SymphonyAPI"
+      Jwt__Audience: "SymphonyAPIClients"
+
+    ports:
+      - "5000:8080"
+
+    depends_on:
+      - symphony.api
+
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "MiPasswordSegura2026"
+
+    ports:
+      - "1433:1433"
+
+    volumes:
+      - sql_data:/var/opt/mssql
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q 'SELECT 1' || exit 1"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+
+volumes:
+  sql_data:
